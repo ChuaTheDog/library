@@ -16,4 +16,8 @@ router.get('/new_book', function(req, res) {
 	res.render('new_book');
 });
 
+router.get('/:id', function(req, res, next) {
+	res.render('book_detail');
+});
+
 module.exports = router;
