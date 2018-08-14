@@ -15,14 +15,9 @@ router.get('/', function(req, res, next) {
 router.get('/new_book', function(req, res) {
 	res.render('new_book');
 });
-/*
-router.get('/:id', function(req, res, next) {
-//	res.render('book_detail');
-});
-*/
+
 /* GET detail book. */
 router.get('/:id', function(req, res) {
-	console.log(req.params.id);
 	Book.findOne({
 		where: { id: req.params.id },
 		attributes: ['id', 'title', 'author', 'genre', 'first_published']
@@ -31,4 +26,34 @@ router.get('/:id', function(req, res) {
 	});
 });
 
+/*  update book. */
+router.post('/:id', function(req, res, next) {
+	//console.log(req.body);
+	const updates = req.body.title;
+	Book.findById(req.params.id).then(book => {
+		book
+			.updateAttributes({
+				title: req.body.title,
+				author: req.body.author,
+				genre: req.body.genre,
+				first_published: req.body.first_published
+			})
+			.then(() => {
+				res.redirect('/books/' + req.params.id);
+			});
+	});
+});
+
 module.exports = router;
+
+/*
+
+Article.findById(req.params.id)
+	.then(function(article) {
+		return article.update(req.body);
+	})
+	.then(function(article) {
+		res.redirect('/articles/' + article.id);
+	});
+
+	*/
