@@ -12,4 +12,11 @@ router.get('/all_books', function(req, res, next) {
 	});
 });
 
+router.get('/all_loans', function(req, res, next) {
+	res.render('all_loans');
+});
+
+router.get('/all_patrons', function(req, res, next) {
+	res.render('all_patrons');
+});
 module.exports = router;
