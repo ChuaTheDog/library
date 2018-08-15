@@ -19,6 +19,29 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/new_patron', function(req, res, next) {
+	res.render('new_patron');
+});
+
+/* POST create Patron. */
+router.post('/', function(req, res, next) {
+	Patron.create(req.body)
+		.then(function(patron) {
+			res.redirect('/patrons/');
+		})
+		.catch(function(error) {
+			if (error.name === 'SequelizeValidationError') {
+				console.log(error.name);
+				res.render('new_patron', {
+					patron: Patron.build(req.body),
+					errors: error.errors
+				});
+			} else {
+				throw error;
+			}
+		});
+});
+
 /*get detail patron*/
 router.get('/:id', function(req, res) {
 	Patron.findOne({
