@@ -12,6 +12,26 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+/* POST create article. */
+router.post('/', function(req, res, next) {
+	Book.create(req.body)
+		.then(function(book) {
+			res.redirect('/books/');
+		})
+		.catch(function(error) {
+			if (error.name === 'SequelizeValidationError') {
+				console.log(error.name);
+				res.render('new_book', {
+					book: Book.build(req.body),
+					errors: error.errors,
+					title: 'New Article'
+				});
+			} else {
+				throw error;
+			}
+		});
+});
+
 router.get('/new_book', function(req, res) {
 	res.render('new_book');
 });
@@ -38,6 +58,18 @@ router.post('/:id', function(req, res, next) {
 				genre: req.body.genre,
 				first_published: req.body.first_published
 			})
+			.catch(function(error) {
+				if (error.name === 'SequelizeValidationError') {
+					console.log(error.name);
+					res.render('book_detail', {
+						book: Book.build(req.body),
+						errors: error.errors,
+						title: 'New Article'
+					});
+				} else {
+					throw error;
+				}
+			})
 			.then(() => {
 				res.redirect('/books/' + req.params.id);
 			});
@@ -45,15 +77,3 @@ router.post('/:id', function(req, res, next) {
 });
 
 module.exports = router;
-
-/*
-
-Article.findById(req.params.id)
-	.then(function(article) {
-		return article.update(req.body);
-	})
-	.then(function(article) {
-		res.redirect('/articles/' + article.id);
-	});
-
-	*/

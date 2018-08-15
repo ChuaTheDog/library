@@ -3,10 +3,41 @@ module.exports = (sequelize, DataTypes) => {
 	var books = sequelize.define(
 		'books',
 		{
-			title: DataTypes.TEXT,
-			author: DataTypes.TEXT,
-			genre: DataTypes.TEXT,
-			first_published: DataTypes.INTEGER
+			title: {
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: {
+						msg: 'Title is required'
+					}
+				}
+			},
+			author: {
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: {
+						msg: 'Author is required'
+					}
+				}
+			},
+			genre: {
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: {
+						msg: 'Genre is required'
+					}
+				}
+			},
+			first_published: {
+				type: DataTypes.INTEGER,
+				validate: {
+					notEmpty: {
+						msg: 'First Published is required'
+					},
+					isNumeric: {
+						msg: 'not a number'
+					}
+				}
+			}
 		},
 		{
 			timestamps: false

@@ -1,6 +1,7 @@
 extends layout
 block content 
   h1= book.title
+  include errors
   form(action="/books/" + book.id , method="post")
     p
       label(for='title') Title
