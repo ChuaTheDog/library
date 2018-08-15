@@ -43,9 +43,6 @@ module.exports = (sequelize, DataTypes) => {
 			timestamps: false
 		}
 	);
-	books.associate = function(models) {
-		// associations can be defined here
-		books.hasOne(models.books);
-	};
+	books.associate = function(models) {};
 	return books;
 };

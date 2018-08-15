@@ -11,6 +11,7 @@ var basename = path.basename(__filename);
 var env = process.env.NODE_ENV || 'development';
 var config = require(__dirname + '/../config/config.json')[env];
 var db = {};
+var moment = require('moment');
 
 if (config.use_env_variable) {
 	var sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -33,6 +34,20 @@ router.get('/', function(req, res, next) {
 		.then(loans => {
 			// We don't need spread here, since only the results will be returned for select queries
 			res.render('all_loans', { loans: loans });
+			//res.send(loans);
+		});
+});
+
+/* GET loans listing. */
+router.get('/new_loan', function(req, res, next) {
+	sequelize
+		.query(
+			'SELECT title, first_name, last_name FROM loans INNER JOIN books on loans.book_id = books.id INNER JOIN patrons on loans.patron_id = patrons.id',
+			{ type: sequelize.QueryTypes.SELECT }
+		)
+		.then(loans => {
+			// We don't need spread here, since only the results will be returned for select queries
+			res.render('new_loan', { loans: loans });
 			//res.send(loans);
 		});
 });

@@ -14,16 +14,6 @@ module.exports = (sequelize, DataTypes) => {
 			underscored: true
 		}
 	);
-	loans.associate = function(models) {
-		// associations can be defined here
-		loans.belongsTo(models.books, {
-			foreignKey: 'book_id',
-			constraints: false
-		});
-		loans.belongsTo(models.patrons, {
-			foreignKey: 'patron_id',
-			constraints: false
-		});
-	};
+	loans.associate = function(models) {};
 	return loans;
 };

@@ -59,9 +59,6 @@ module.exports = (sequelize, DataTypes) => {
 			timestamps: false
 		}
 	);
-	patrons.associate = function(models) {
-		// associations can be defined here
-		patrons.hasMany(models.loans);
-	};
+	patrons.associate = function(models) {};
 	return patrons;
 };

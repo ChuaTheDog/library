@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var helpers = require('./helpers');
 var indexRouter = require('./routes/index');
 var booksRouter = require('./routes/books');
 var loansRouter = require('./routes/loans');
@@ -34,6 +34,8 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
 	// set locals, only providing error in development
+	//	res.locals.h = helpers;
+	//	res.locals.moment = require('moment');
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
@@ -41,5 +43,7 @@ app.use(function(err, req, res, next) {
 	res.status(err.status || 500);
 	res.render('error');
 });
+
+app.locals.moment = require('moment');
 
 module.exports = app;

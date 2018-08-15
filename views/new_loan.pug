@@ -1,0 +1,27 @@
+extends layout
+block content 
+
+  h1 New Loan
+  include errors
+  form(action="/loans", method="post")
+    form
+      p
+        label(for='book_id') Book
+        select#book_id
+          for loan in loans
+            option(value='1')= loan.title
+
+      p
+        label(for='patron_id') Patron
+        select#patron_id
+          for loan in loans
+            option(value='1')= loan.first_name + ' ' + loan.last_name
+    
+      p
+        label(for='loaned_on') Loaned on:
+        input#loaned_on(type='text' value=`${moment().format('MM/DD/YYYY')}`)
+      p
+        label(for='return_by') Return by:
+        input#return_by(type='text' value=`${moment().add(7,'d').format('MM/DD/YYYY')}`)
+      p
+        input(type='submit' value='Create New Loan')
