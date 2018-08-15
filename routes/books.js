@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-/* POST create article. */
+/* POST create Book. */
 router.post('/', function(req, res, next) {
 	Book.create(req.body)
 		.then(function(book) {
