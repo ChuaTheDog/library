@@ -19,4 +19,21 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/:id', function(req, res) {
+	Patron.findOne({
+		where: { id: req.params.id },
+		attributes: [
+			'id',
+			'first_name',
+			'last_name',
+			'address',
+			'email',
+			'library_id',
+			'zip_code'
+		]
+	}).then(patron => {
+		res.render('patron_detail', { patron: patron });
+	});
+});
+
 module.exports = router;
