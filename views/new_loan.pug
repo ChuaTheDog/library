@@ -9,13 +9,13 @@ block content
         label(for='book_id') Book
         select#book_id
           for loan in loans
-            option(value='1')= loan.title
+            option(value=`${loan.book_id}`)= loan.id
 
       p
         label(for='patron_id') Patron
         select#patron_id
           for patron in patrons
-            option()= patron.first_name + ' ' + patron.last_name
+            option(value=`${patron.id}`)= patron.first_name + ' ' + patron.last_name
     
       p
         label(for='loaned_on') Loaned on:

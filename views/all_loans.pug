@@ -22,11 +22,11 @@ block content
     tbody
       for loan in loans
         tr
+          td 
+            a(href="books/" + loan.book.id) #{loan.book.title}
           td
-            a(href='/books/') #{loan.title}
-          td= loan.first_name + ' ' +  loan.last_name
+            a(href="patrons/" + loan.patron.id) #{loan.patron.first_name}  #{loan.patron.last_name} 
           td= loan.loaned_on
           td= loan.return_by
-          td= loan.returned_on    
-          td
-            a action
+          td= loan.returned_on
+          td action
