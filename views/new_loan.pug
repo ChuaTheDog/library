@@ -14,8 +14,8 @@ block content
       p
         label(for='patron_id') Patron
         select#patron_id
-      //   for patron in patrons
-        //  option(value='1')= patron.first_name + ' ' + patron.last_name
+          for patron in patrons
+            option()= patron.first_name + ' ' + patron.last_name
     
       p
         label(for='loaned_on') Loaned on:

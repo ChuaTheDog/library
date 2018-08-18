@@ -31,7 +31,6 @@ router.get('/', function(req, res, next) {
 		)
 
 		.then(loans => {
-			// We don't need spread here, since only the results will be returned for select queries
 			res.render('all_loans', { loans: loans });
 			//res.send(loans);
 		});
@@ -44,11 +43,11 @@ router.get('/new_loan', function(req, res, next) {
 			'SELECT * FROM books LEFT JOIN loans ON books.id = loans.book_id WHERE loans.book_ID IS NULL',
 			{ type: sequelize.QueryTypes.SELECT }
 		)
-
 		.then(loans => {
-			// We don't need spread here, since only the results will be returned for select queries
-			res.render('new_loan', { loans: loans });
-			//res.send(loans);
+			Patron.findAll().then(function(patrons) {
+				console.log(patrons);
+				res.render('new_loan', { loans, patrons });
+			});
 		});
 });
 
@@ -73,10 +72,29 @@ router.get('/overdue_loans', function(req, res, next) {
 		)
 
 		.then(loans => {
-			// We don't need spread here, since only the results will be returned for select queries
 			//	res.render('new_loan', { loans: loans });
 			res.send(loans);
 		});
+});
+
+router.get('/test', function(req, res, next) {
+	sequelize
+		.query('SELECT * FROM `books`', { type: sequelize.QueryTypes.SELECT })
+		.then(results => {
+			console.log(results);
+			Patron.findAll().then(function(patrons) {
+				console.log(patrons);
+				res.send({ results, patrons });
+			});
+		});
+});
+
+router.get('/test2', function(req, res, next) {
+	Loan.findAll({ include: [{ model: Book }, { model: Patron }] }).then(function(
+		loans
+	) {
+		res.send({ loans });
+	});
 });
 module.exports = router;
 /*
