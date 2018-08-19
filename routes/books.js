@@ -38,6 +38,24 @@ router.get('/overdue/', function(req, res) {
 	});
 });
 
+router.get('/checked/', function(req, res) {
+	Loan.findAll({
+		where: {
+			returned_on: null
+			/*		return_by: {
+				[Op.gte]: moment().format('MM-DD-YYYY')
+			}*/
+		},
+		include: [
+			{
+				model: Book
+			}
+		]
+	}).then(loans => {
+		res.render('checked_books', { loans: loans });
+		//	res.send(loans);
+	});
+});
 /* POST create Book. */
 router.post('/', function(req, res, next) {
 	Book.create(req.body)
