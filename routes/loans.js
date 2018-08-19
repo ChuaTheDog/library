@@ -15,6 +15,23 @@ router.get('/', function(req, res, next) {
 	);
 });
 
+/* GET loans listing. */
+router.get('/new_loan', function(req, res, next) {
+	Loan.findAll({}).then(loans => {
+		Patron.findAll({
+			attributes: ['id', 'first_name', 'last_name']
+		}).then(patrons => {
+			res.render('new_loan', { patrons: patrons });
+		});
+	});
+});
+
+/* POST create Patron. */
+router.post('/', function(req, res, next) {
+	console.log(req.body);
+	res.send(req.body);
+});
+
 module.exports = router;
 /*
 GET ALL TITELS AVAILABLE:

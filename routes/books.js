@@ -1,6 +1,12 @@
 var express = require('express');
 var router = express.Router();
+var Loan = require('../models').loans;
 var Book = require('../models').books;
+var Patron = require('../models').patrons;
+var Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
+var moment = require('moment');
 
 /* GET books listing. */
 
@@ -9,6 +15,26 @@ router.get('/', function(req, res, next) {
 		attributes: ['id', 'title', 'author', 'genre', 'first_published']
 	}).then(books => {
 		res.render('all_books', { books: books });
+	});
+});
+
+/*overdue books*/
+router.get('/overdue/', function(req, res) {
+	Loan.findAll({
+		where: {
+			returned_on: null,
+			return_by: {
+				[Op.lt]: moment().format('MM-DD-YYYY')
+			}
+		},
+		include: [
+			{
+				model: Book
+			}
+		]
+	}).then(loans => {
+		res.render('overdue_books', { loans: loans });
+		//	res.send(loans);
 	});
 });
 

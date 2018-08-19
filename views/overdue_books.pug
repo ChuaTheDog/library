@@ -1,15 +1,15 @@
 extends layout
 block content 
-  h1 Books
+  h1 Overdue
   p
     a.button(href='books/new_book') Create New Book
   p
     | Filters 
     a(href='/books') All
     |  | 
-    a(href='/books/overdue') Overdue
+    a(href='overdue_books') Overdue
     |  | 
-    a(href='/books/checked') Checked Out
+    a(href='checked_books') Checked Out
   table
     thead
       tr
@@ -18,11 +18,11 @@ block content
         th Genre
         th Year Released
     tbody
-      for book in books
+      for loan in loans
         tr
           td
-            a(href='/books/'+book.id) #{book.title}
-          td= book.author
-          td= book.genre
-          td= book.first_published
+            a(href='/books/'+loan.book.id) #{loan.book.title}
+          td= loan.book.author
+          td= loan.book.genre
+          td= loan.book.first_published
     
