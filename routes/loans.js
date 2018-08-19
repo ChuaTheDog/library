@@ -6,6 +6,7 @@ var Patron = require('../models').patrons;
 
 var Sequelize = require('sequelize');
 var moment = require('moment');
+const Op = Sequelize.Op;
 
 router.get('/', function(req, res, next) {
 	Loan.findAll({ include: [{ model: Book }, { model: Patron }] }).then(
@@ -13,6 +14,28 @@ router.get('/', function(req, res, next) {
 			res.render('all_loans', { loans: loans });
 		}
 	);
+});
+
+router.get('/overdue/', function(req, res) {
+	Loan.findAll({
+		where: {
+			returned_on: null,
+			return_by: {
+				[Op.lt]: moment().format('MM-DD-YYYY')
+			}
+		},
+		include: [
+			{
+				model: Book
+			},
+			{
+				model: Patron
+			}
+		]
+	}).then(loans => {
+		res.render('overdue_loans', { loans: loans });
+		//	res.send(loans);
+	});
 });
 
 /* GET loans listing. */
