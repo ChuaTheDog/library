@@ -38,6 +38,24 @@ router.get('/overdue/', function(req, res) {
 	});
 });
 
+router.get('/checked', function(req, res) {
+	Loan.findAll({
+		where: {
+			returned_on: null
+		},
+		include: [
+			{
+				model: Book
+			},
+			{
+				model: Patron
+			}
+		]
+	}).then(loans => {
+		res.render('checked_loans', { loans: loans });
+		//	res.send(loans);
+	});
+});
 /* GET loans listing. */
 router.get('/new_loan', function(req, res, next) {
 	Loan.findAll({}).then(loans => {
