@@ -71,7 +71,6 @@ router.get('/new_loan', function(req, res, next) {
 			attributes: ['id', 'first_name', 'last_name']
 		}).then(patrons => {
 			res.render('new_loan', { books: books, patrons: patrons });
-
 			//	res.send({ books, patrons });
 		});
 	});

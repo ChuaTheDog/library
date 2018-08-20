@@ -82,11 +82,22 @@ router.get('/new_book', function(req, res) {
 
 /* GET detail book. */
 router.get('/:id', function(req, res) {
-	Book.findOne({
-		where: { id: req.params.id },
-		attributes: ['id', 'title', 'author', 'genre', 'first_published']
-	}).then(book => {
-		res.render('book_detail', { book: book });
+	Book.findById(req.params.id).then(book => {
+		Loan.findAll({
+			where: {
+				book_id: req.params.id
+			},
+			include: [
+				{
+					model: Book
+				},
+				{
+					model: Patron
+				}
+			]
+		}).then(loans => {
+			res.render('book_detail', { book: book, loans });
+		});
 	});
 });
 
