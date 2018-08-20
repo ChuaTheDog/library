@@ -79,8 +79,9 @@ router.get('/new_loan', function(req, res, next) {
 
 /* POST create Patron. */
 router.post('/', function(req, res, next) {
-	console.log(req.body);
-	res.send(req.body);
+	Loan.create(req.body).then(loans => {
+		res.redirect('/loans');
+	});
 });
 
 module.exports = router;
