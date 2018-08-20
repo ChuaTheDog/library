@@ -121,16 +121,31 @@ router.post('/:id', function(req, res, next) {
 				genre: req.body.genre,
 				first_published: req.body.first_published
 			})
-
 			.then(() => {
 				res.redirect('/books/' + req.params.id);
 			})
 			.catch(error => {
 				if (error.name === 'SequelizeValidationError') {
 					console.log(error.name);
-					res.render('book_detail', {
-						book: book,
-						errors: error.errors
+
+					Loan.findAll({
+						where: {
+							book_id: req.params.id
+						},
+						include: [
+							{
+								model: Book
+							},
+							{
+								model: Patron
+							}
+						]
+					}).then(loans => {
+						res.render('book_detail', {
+							book: book,
+							loans,
+							errors: error.errors
+						});
 					});
 				}
 			});
