@@ -109,19 +109,31 @@ router.get('/:id/return/', function(req, res, next) {
 
 router.post('/:id/return', function(req, res, next) {
 	Loan.update(req.body, { where: { id: req.params.id } })
+		.then(() => {
+			res.redirect('/loans');
+		})
 		.catch(function(error) {
 			if (error.name === 'SequelizeValidationError') {
 				console.log(error.name);
-				res.render('return_book', {
-					//		patron: Patron.build(req.body),
-					errors: error.errors
+				Loan.findOne({
+					where: {
+						id: req.params.id
+					},
+					include: [
+						{
+							model: Book
+						},
+						{
+							model: Patron
+						}
+					]
+				}).then(loan => {
+					res.render('return_book', { loan });
+					//res.send(loan);
 				});
 			} else {
 				throw error;
 			}
-		})
-		.then(() => {
-			res.redirect('/loans');
 		});
 });
 
