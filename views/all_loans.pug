@@ -29,4 +29,5 @@ block content
           td= loan.loaned_on
           td= loan.return_by
           td= loan.returned_on
-          td action
+          td             
+            a(href="loans/" + loan.id) Action

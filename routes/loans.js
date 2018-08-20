@@ -56,8 +56,24 @@ router.get('/checked', function(req, res) {
 	});
 });
 
-/* GET loans listing. */
-//SELECT * FROM books LEFT JOIN loans ON books.id = loans.book_id WHERE loans.book_ID IS NULL
+router.get('/:id', function(req, res, next) {
+	Loan.findOne({
+		where: {
+			id: req.params.id
+		},
+		include: [
+			{
+				model: Book
+			},
+			{
+				model: Patron
+			}
+		]
+	}).then(loan => {
+		res.render('return_book', { loan });
+		//res.send(loan);
+	});
+});
 
 router.get('/new_loan', function(req, res, next) {
 	Book.findAll({
@@ -84,6 +100,3 @@ router.post('/', function(req, res, next) {
 });
 
 module.exports = router;
-/*
-GET ALL TITELS AVAILABLE:
-*/
