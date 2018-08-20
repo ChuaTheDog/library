@@ -77,9 +77,15 @@ router.get('/create', function(req, res, next) {
 /* POST create Loan. */
 router.post('/create', function(req, res, next) {
 	//res.send(req.body);
-	Loan.create(req.body).then(loans => {
-		res.redirect('/loans');
-	});
+	Loan.create(req.body)
+		.then(loans => {
+			res.redirect('/loans');
+		})
+		.catch(error => {
+			if (error.name === 'SequelizeValidationError') {
+				res.render('return_book', {});
+			}
+		});
 });
 
 router.get('/:id/return/', function(req, res, next) {
@@ -102,15 +108,21 @@ router.get('/:id/return/', function(req, res, next) {
 });
 
 router.post('/:id/return', function(req, res, next) {
-	//console.log(req.body);
-	//res.send(req.body);
-	/*	Loan.create(req.body).then(loans => {
-		res.redirect('/loans');
-	});
-*/
-	Loan.update(req.body, { where: { id: req.params.id } }).then(loans => {
-		res.redirect('/loans');
-	});
+	Loan.update(req.body, { where: { id: req.params.id } })
+		.catch(function(error) {
+			if (error.name === 'SequelizeValidationError') {
+				console.log(error.name);
+				res.render('return_book', {
+					//		patron: Patron.build(req.body),
+					errors: error.errors
+				});
+			} else {
+				throw error;
+			}
+		})
+		.then(() => {
+			res.redirect('/loans');
+		});
 });
 
 module.exports = router;

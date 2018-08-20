@@ -1,6 +1,6 @@
 extends layout
 block content 
-  h1= book.title
+  //h1= #if book.title
   include errors
   form(action="/books/" + book.id , method="post")
     p
@@ -37,4 +37,6 @@ block content
           td= loan.loaned_on
           td= loan.return_by
           td= loan.returned_on
-          td action
+          td  
+            if !loan.returned_on  
+              a(href="/loans/" + loan.id + "/return") Action

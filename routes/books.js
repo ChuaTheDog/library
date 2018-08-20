@@ -13,9 +13,13 @@ var moment = require('moment');
 router.get('/', function(req, res, next) {
 	Book.findAll({
 		attributes: ['id', 'title', 'author', 'genre', 'first_published']
-	}).then(books => {
-		res.render('all_books', { books: books });
-	});
+	})
+		.then(books => {
+			res.render('all_books', { books: books });
+		})
+		.catch(function(err) {
+			res.send(500);
+		});
 });
 
 /*overdue books*/
@@ -32,10 +36,14 @@ router.get('/overdue/', function(req, res) {
 				model: Book
 			}
 		]
-	}).then(loans => {
-		res.render('overdue_books', { loans: loans });
-		//	res.send(loans);
-	});
+	})
+		.then(loans => {
+			res.render('overdue_books', { loans: loans });
+			//	res.send(loans);
+		})
+		.catch(function(err) {
+			res.send(500);
+		});
 });
 
 router.get('/checked/', function(req, res) {
@@ -113,20 +121,18 @@ router.post('/:id', function(req, res, next) {
 				genre: req.body.genre,
 				first_published: req.body.first_published
 			})
-			.catch(function(error) {
+
+			.then(() => {
+				res.redirect('/books/' + req.params.id);
+			})
+			.catch(error => {
 				if (error.name === 'SequelizeValidationError') {
 					console.log(error.name);
 					res.render('book_detail', {
-						book: Book.build(req.body),
-						errors: error.errors,
-						title: 'New Article'
+						book: book,
+						errors: error.errors
 					});
-				} else {
-					throw error;
 				}
-			})
-			.then(() => {
-				res.redirect('/books/' + req.params.id);
 			});
 	});
 });

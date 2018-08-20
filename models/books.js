@@ -35,7 +35,11 @@ module.exports = (sequelize, DataTypes) => {
 					},
 					isNumeric: {
 						msg: 'not a number'
-					}
+					},
+					len: {
+						args: [2, 4],
+						msg: 'too many characters'
+					} // only allow values with length between 2 and 10
 				}
 			}
 		},
