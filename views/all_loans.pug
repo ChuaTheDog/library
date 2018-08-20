@@ -2,7 +2,7 @@ extends layout
 block content 
   h1 Loans
   p
-    a.button(href='/loans/new_loan') Create New Loan
+    a.button(href='/loans/create') Create New Loan
   p
     | Filters 
     a(href='/loans/') All
@@ -30,4 +30,4 @@ block content
           td= loan.return_by
           td= loan.returned_on
           td             
-            a(href="loans/" + loan.id) Action
+            a(href="loans/" + loan.id + "/return") Action

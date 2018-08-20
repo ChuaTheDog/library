@@ -14,9 +14,15 @@ block content
   p
     strong Return By: 
     | #{loan.return_by}
-  form
+  form(action="/loans/" + `${loan.id}` +  "/return", method="post")
+    p #{loan.id}
+      
+    input(type='hidden' value=`${loan.id}` name='id')
+    input(type='hidden' value=`${loan.book_id}` name='book_id')
+    input(type='hidden' value=`${loan.patron_id}` name='patron_id')
+
     p
       label(for='returned_on') Returned on:
-      input#returned_on(type='text' value=`${moment().format('MM-DD-YYYY')}` name='returned_on')
+      input#returned_on(type='text' value=`${moment().format('MM-DD-YYYY').substring(1, 10)}` name='returned_on')
     p
       input(type='submit' value='Return Book')

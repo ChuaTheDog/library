@@ -15,6 +15,7 @@ router.get('/', function(req, res, next) {
 		}
 	);
 });
+
 router.get('/overdue/', function(req, res) {
 	Loan.findAll({
 		where: {
@@ -56,7 +57,32 @@ router.get('/checked', function(req, res) {
 	});
 });
 
-router.get('/:id', function(req, res, next) {
+router.get('/create', function(req, res, next) {
+	Book.findAll({
+		include: [
+			{
+				model: Loan
+			}
+		]
+	}).then(books => {
+		Patron.findAll({
+			attributes: ['id', 'first_name', 'last_name']
+		}).then(patrons => {
+			res.render('new_loan', { books: books, patrons: patrons });
+			//	res.send({ books, patrons });
+		});
+	});
+});
+
+/* POST create Loan. */
+router.post('/create', function(req, res, next) {
+	//res.send(req.body);
+	Loan.create(req.body).then(loans => {
+		res.redirect('/loans');
+	});
+});
+
+router.get('/:id/return/', function(req, res, next) {
 	Loan.findOne({
 		where: {
 			id: req.params.id
@@ -75,26 +101,14 @@ router.get('/:id', function(req, res, next) {
 	});
 });
 
-router.get('/new_loan', function(req, res, next) {
-	Book.findAll({
-		include: [
-			{
-				model: Loan
-			}
-		]
-	}).then(books => {
-		Patron.findAll({
-			attributes: ['id', 'first_name', 'last_name']
-		}).then(patrons => {
-			res.render('new_loan', { books: books, patrons: patrons });
-			//	res.send({ books, patrons });
-		});
+router.post('/:id/return', function(req, res, next) {
+	//console.log(req.body);
+	//res.send(req.body);
+	/*	Loan.create(req.body).then(loans => {
+		res.redirect('/loans');
 	});
-});
-
-/* POST create Patron. */
-router.post('/', function(req, res, next) {
-	Loan.create(req.body).then(loans => {
+*/
+	Loan.update(req.body, { where: { id: req.params.id } }).then(loans => {
 		res.redirect('/loans');
 	});
 });
