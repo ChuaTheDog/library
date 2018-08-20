@@ -80,20 +80,33 @@ router.post('/:id', function(req, res, next) {
 				library_id: req.body.library_id,
 				zip_code: req.body.zip_code
 			})
-			.catch(function(error) {
-				if (error.name === 'SequelizeValidationError') {
-					console.log(error.name);
-					res.render('patron_detail', {
-						patron: Patron.build(req.body),
-						errors: error.errors,
-						title: 'New Article'
-					});
-				} else {
-					throw error;
-				}
-			})
 			.then(() => {
 				res.redirect('/patrons/' + req.params.id);
+			})
+			.catch(error => {
+				if (error.name === 'SequelizeValidationError') {
+					console.log(error.name);
+
+					Loan.findAll({
+						where: {
+							book_id: req.params.id
+						},
+						include: [
+							{
+								model: Book
+							},
+							{
+								model: Patron
+							}
+						]
+					}).then(loans => {
+						res.render('patron_detail', {
+							patron: patron,
+							loans,
+							errors: error.errors
+						});
+					});
+				}
 			});
 	});
 });
