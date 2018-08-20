@@ -15,7 +15,6 @@ router.get('/', function(req, res, next) {
 		}
 	);
 });
-
 router.get('/overdue/', function(req, res) {
 	Loan.findAll({
 		where: {
@@ -56,13 +55,24 @@ router.get('/checked', function(req, res) {
 		//	res.send(loans);
 	});
 });
+
 /* GET loans listing. */
+//SELECT * FROM books LEFT JOIN loans ON books.id = loans.book_id WHERE loans.book_ID IS NULL
+
 router.get('/new_loan', function(req, res, next) {
-	Loan.findAll({}).then(loans => {
+	Book.findAll({
+		include: [
+			{
+				model: Loan
+			}
+		]
+	}).then(books => {
 		Patron.findAll({
 			attributes: ['id', 'first_name', 'last_name']
 		}).then(patrons => {
-			res.render('new_loan', { patrons: patrons });
+			res.render('new_loan', { books: books, patrons: patrons });
+
+			//	res.send({ books, patrons });
 		});
 	});
 });

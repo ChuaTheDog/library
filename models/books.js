@@ -40,9 +40,12 @@ module.exports = (sequelize, DataTypes) => {
 			}
 		},
 		{
-			timestamps: false
+			timestamps: false,
+			underscored: true
 		}
 	);
-	books.associate = function(models) {};
+	books.associate = function(models) {
+		books.hasOne(models.loans);
+	};
 	return books;
 };
