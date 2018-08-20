@@ -15,7 +15,7 @@ block content
     strong Return By: 
     | #{loan.return_by}
   form(action="/loans/" + `${loan.id}` +  "/return", method="post")
-    p #{loan.id}
+
       
     input(type='hidden' value=`${loan.id}` name='id')
     input(type='hidden' value=`${loan.book_id}` name='book_id')

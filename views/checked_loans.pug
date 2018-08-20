@@ -5,7 +5,7 @@ block content
     a.button(href='books/new_book') Create New Book
   p
     | Filters 
-    a(href='/books') All
+    a(href='/loans') All
     |  | 
     a(href='overdue') Overdue
     |  | 
@@ -29,4 +29,6 @@ block content
           td= loan.loaned_on
           td= loan.return_by
           td= loan.returned_on
-          td action
+          td  
+            if !loan.returned_on  
+              a(href="loans/" + loan.id + "/return") Action
