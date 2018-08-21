@@ -1,4 +1,8 @@
 'use strict';
+var Sequelize = require('sequelize');
+
+var sequelizePagination = require('sequelize-paginate-cursor');
+
 module.exports = (sequelize, DataTypes) => {
 	var books = sequelize.define(
 		'books',
