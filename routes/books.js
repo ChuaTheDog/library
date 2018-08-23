@@ -122,7 +122,7 @@ router.post('/:id', function(req, res, next) {
 				first_published: req.body.first_published
 			})
 			.then(() => {
-				res.redirect('/books/' + req.params.id);
+				res.redirect('/books');
 			})
 			.catch(error => {
 				if (error.name === 'SequelizeValidationError') {

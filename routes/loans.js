@@ -83,7 +83,24 @@ router.post('/create', function(req, res, next) {
 		})
 		.catch(error => {
 			if (error.name === 'SequelizeValidationError') {
-				res.render('return_book', {});
+				Book.findAll({
+					include: [
+						{
+							model: Loan
+						}
+					]
+				}).then(books => {
+					Patron.findAll({
+						attributes: ['id', 'first_name', 'last_name']
+					}).then(patrons => {
+						res.render('new_loan', {
+							books: books,
+							patrons: patrons,
+							errors: error.errors
+						});
+						//	res.send({ books, patrons });
+					});
+				});
 			}
 		});
 });

@@ -81,7 +81,7 @@ router.post('/:id', function(req, res, next) {
 				zip_code: req.body.zip_code
 			})
 			.then(() => {
-				res.redirect('/patrons/' + req.params.id);
+				res.redirect('/patrons/');
 			})
 			.catch(error => {
 				if (error.name === 'SequelizeValidationError') {
