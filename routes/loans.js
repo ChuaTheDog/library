@@ -4,9 +4,28 @@ var Loan = require('../models').loans;
 var Book = require('../models').books;
 var Patron = require('../models').patrons;
 
-var Sequelize = require('sequelize');
 var moment = require('moment');
+var fs = require('fs');
+var path = require('path');
+var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
+var basename = path.basename(__filename);
+var env = process.env.NODE_ENV || 'development';
+var config = require(__dirname + '/../config/config.json')[env];
+var db = {};
+var moment = require('moment');
+
+if (config.use_env_variable) {
+	var sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+	var sequelize = new Sequelize(
+		config.database,
+		config.username,
+		config.password,
+		config
+	);
+}
 
 router.get('/', function(req, res, next) {
 	Loan.findAll({ include: [{ model: Book }, { model: Patron }] }).then(
@@ -21,7 +40,7 @@ router.get('/overdue/', function(req, res) {
 		where: {
 			returned_on: null,
 			return_by: {
-				[Op.lt]: moment().format('MM-DD-YYYY')
+				[Op.lt]: moment().format('YYYY-MM-DD')
 			}
 		},
 		include: [
@@ -58,18 +77,10 @@ router.get('/checked', function(req, res) {
 });
 
 router.get('/create', function(req, res, next) {
-	Book.findAll({
-		include: [
-			{
-				model: Loan
-			}
-		]
-	}).then(books => {
-		Patron.findAll({
-			attributes: ['id', 'first_name', 'last_name']
-		}).then(patrons => {
-			res.render('new_loan', { books: books, patrons: patrons });
-			//	res.send({ books, patrons });
+	Book.findAll({}).then(books => {
+		Patron.findAll({}).then(patrons => {
+			//res.json({ books, patrons });
+			res.render('new_loan', { books, patrons });
 		});
 	});
 });

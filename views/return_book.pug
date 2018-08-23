@@ -23,6 +23,6 @@ block content
 
     p
       label(for='returned_on') Returned on:
-      input#returned_on(type='text' value=`${moment().format('MM-DD-YYYY').substring(1, 10)}` name='returned_on')
+      input#returned_on(type='text' value=`${moment().format('YYYY-MM-DD')}` name='returned_on')
     p
       input(type='submit' value='Return Book')

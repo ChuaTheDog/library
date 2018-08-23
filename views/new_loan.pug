@@ -11,14 +11,15 @@ block content
             option(value=`${book.id}`)= book.title
       p
         label(for='patron_id') Patron
+    
         select(name='patron_id')
           for patron in patrons
             option(value=`${patron.id}`)= patron.first_name + ' ' + patron.last_name
       p
         label(for='loaned_on') Loaned on:
-        input#loaned_on(type='text' value=`${moment().format('MM-DD-YYYY')}` name='loaned_on')
+        input#loaned_on(type='text' value=`${moment().format('YYYY-MM-DD')}` name='loaned_on')
       p
         label(for='return_by') Return by:
-        input#return_by(type='text' value=`${moment().add(7,'d').format('MM-DD-YYYY')}` name='return_by')
+        input#return_by(type='text' value=`${moment().add(7,'d').format('YYYY-MM-DD')}` name='return_by')
       p
         input(type='submit' value='Create New Loan')

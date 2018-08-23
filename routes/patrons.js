@@ -49,7 +49,7 @@ router.get('/:id', function(req, res) {
 	Patron.findById(req.params.id).then(patron => {
 		Loan.findAll({
 			where: {
-				book_id: req.params.id
+				patron_id: req.params.id
 			},
 			include: [
 				{
