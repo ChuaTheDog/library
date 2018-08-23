@@ -32,19 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 				}
 			},
 			first_published: {
-				type: DataTypes.INTEGER,
-				validate: {
-					notEmpty: {
-						msg: 'First Published is required'
-					},
-					isNumeric: {
-						msg: 'not a number'
-					},
-					len: {
-						args: [2, 4],
-						msg: 'too many characters'
-					} // only allow values with length between 2 and 10
-				}
+				type: DataTypes.INTEGER
 			}
 		},
 		{
